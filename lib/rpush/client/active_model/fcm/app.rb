@@ -5,8 +5,7 @@ module Rpush
         module App
           def self.included(base)
             base.instance_eval do
-              # TODO: Add whatever validation is needed here
-              # validates :auth_key, presence: true
+              validates :json_key, presence: true
             end
           end
 
