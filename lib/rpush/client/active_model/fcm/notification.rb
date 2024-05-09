@@ -12,6 +12,7 @@ module Rpush
                                          title_loc_args channel_id ticker sticky event_time local_only
                                          default_vibrate_timings default_light_settings vibrate_timings
                                          visibility notification_count light_settings].freeze
+          APNS_NOTIFICATION_KEYS = %w[badge category].freeze
 
           def self.included(base)
             base.instance_eval do
@@ -56,6 +57,7 @@ module Rpush
             json = {
               'data' => data,
               'android' => android_config,
+              'apns' => apns_config,
               'token' => device_token
             }
             # Android does not appear to handle content_available anymore. Instead "priority" should be used
@@ -75,6 +77,13 @@ module Rpush
             json
           end
 
+          def apns_config
+            json = {
+              'payload' => apns_notification,
+            }
+            json
+          end
+
           def notification=(value)
             super(value.with_indifferent_access)
           end
@@ -90,6 +99,11 @@ module Rpush
             json['notification_priority'] = priority_for_notification if priority
             json['sound'] = sound if sound
             json['default_sound'] = !sound || sound == 'default' ? true : false
+            json
+          end
+
+          def apns_notification
+            json = {'aps' => notification&.slice(*APNS_NOTIFICATION_KEYS) || {}}
             json
           end
 

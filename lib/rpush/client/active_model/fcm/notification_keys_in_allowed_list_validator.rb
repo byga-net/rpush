@@ -6,7 +6,8 @@ module Rpush
           def validate(record)
             return unless record.notification
 
-            allowed_keys = Notification::ROOT_NOTIFICATION_KEYS + Notification::ANDROID_NOTIFICATION_KEYS
+            allowed_keys = Notification::ROOT_NOTIFICATION_KEYS + Notification::ANDROID_NOTIFICATION_KEYS +
+                Notification::APNS_NOTIFICATION_KEYS
             invalid_keys = record.notification.keys - allowed_keys
 
             return if invalid_keys.empty?
