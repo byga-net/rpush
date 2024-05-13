@@ -12,7 +12,7 @@ module Rpush
                                          title_loc_args channel_id ticker sticky event_time local_only
                                          default_vibrate_timings default_light_settings vibrate_timings
                                          visibility notification_count light_settings].freeze
-          APNS_NOTIFICATION_KEYS = %w[badge category].freeze
+          APNS_NOTIFICATION_KEYS = %w[badge category thread-id alert].freeze
 
           def self.included(base)
             base.instance_eval do
