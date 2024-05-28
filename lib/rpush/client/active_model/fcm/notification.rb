@@ -104,6 +104,7 @@ module Rpush
 
           def apns_notification
             json = {'aps' => notification&.slice(*APNS_NOTIFICATION_KEYS) || {}}
+            json['aps']['content-available'] = 1 if content_available
             json
           end
 
