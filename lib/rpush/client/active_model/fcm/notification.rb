@@ -49,9 +49,10 @@ module Rpush
             fail ArgumentError, 'FCM does not support dry run' if value
           end
 
-          def mutable_content=(value)
-            fail ArgumentError, 'RPush does not currently support mutable_content for FCM' if value
-          end
+          ## removed in 7.1.0.1; mutable_content is now supplied in payload
+          # def mutable_content=(value)
+          #   fail ArgumentError, 'RPush does not currently support mutable_content for FCM' if value
+          # end
 
           def as_json(options = nil) # rubocop:disable Metrics/PerceivedComplexity
             json = {
