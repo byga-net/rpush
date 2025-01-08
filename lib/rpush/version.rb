@@ -3,7 +3,7 @@ module Rpush
     MAJOR = 7
     MINOR = 1
     TINY = 0
-    PRE = 11
+    PRE = 12
 
     STRING = [MAJOR, MINOR, TINY, PRE].compact.join(".").freeze
 

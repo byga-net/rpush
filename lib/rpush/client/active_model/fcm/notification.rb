@@ -101,6 +101,8 @@ module Rpush
             json['sound'] = sound if sound
             json['default_sound'] = !sound || sound == 'default' ? true : false
             json
+
+            return {"priority" => "high"}
           end
 
           def apns_notification
@@ -110,6 +112,8 @@ module Rpush
             json['aps']['mutable-content'] = 1 if mutable_content
             json['aps']['sound'] = sound if sound
             json
+
+            return {'contentAvailable' => true}
           end
 
           def priority_str
