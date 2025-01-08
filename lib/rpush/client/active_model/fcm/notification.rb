@@ -73,8 +73,10 @@ module Rpush
               'notification' => android_notification,
             }
             json['collapse_key'] = collapse_key if collapse_key
-            json['priority'] = priority_str if priority
-            json['ttl'] = "#{expiry}s" if expiry
+            unless data['experiment']
+              json['priority'] = priority_str if priority
+              json['ttl'] = "#{expiry}s" if expiry
+            end
             json
           end
 
@@ -96,24 +98,23 @@ module Rpush
           end
 
           def android_notification
+            return {"priority" => "high"} if data['experiment']
+
             json = notification&.slice(*ANDROID_NOTIFICATION_KEYS) || {}
             json['notification_priority'] = priority_for_notification if priority
             json['sound'] = sound if sound
             json['default_sound'] = !sound || sound == 'default' ? true : false
             json
-
-            return {"priority" => "high"}
           end
 
           def apns_notification
+            return {'aps' => {'contentAvailable' => true}} if data['experiment']
+
             json = {'aps' => notification&.slice(*APNS_NOTIFICATION_KEYS) || {}}
-            json['aps']['contentAvailable'] = true if content_available
-            # json['aps']['contentAvailable'] = true if content_available
+            json['aps']['content-available'] = 1 if content_available
             json['aps']['mutable-content'] = 1 if mutable_content
             json['aps']['sound'] = sound if sound
             json
-
-            return {'contentAvailable' => true}
           end
 
           def priority_str
